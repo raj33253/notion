@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
-import { Search, Plus, Globe, Lock, Trash2, MoreHorizontal } from "lucide-react";
+import { Search, Plus, Globe, Lock, Trash2, MoreHorizontal, FileText, Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface SidebarProps {
   selectedDocumentId: Id<"documents"> | null;
@@ -70,104 +71,164 @@ export function Sidebar({ selectedDocumentId, onSelectDocument }: SidebarProps) 
   };
 
   return (
-    <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
+    <motion.div
+      initial={{ x: -300, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="w-80 bg-white/80 backdrop-blur-xl border-r border-white/20 flex flex-col shadow-xl"
+    >
       {/* Header */}
-      <div className="p-4 border-b border-gray-200">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900">Documents</h2>
-          <button
+      <div className="p-6 border-b border-white/10">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+              <FileText className="w-5 h-5 text-white" />
+            </div>
+            <h2 className="text-lg font-bold bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent">
+              Documents
+            </h2>
+          </div>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => setShowCreateForm(true)}
-            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 group"
             title="Create new document"
           >
-            <Plus className="w-5 h-5" />
-          </button>
+            <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200" />
+          </motion.button>
         </div>
 
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <input
             type="text"
             placeholder="Search documents..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-12 pr-4 py-3 bg-white/60 backdrop-blur-sm border border-white/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200 placeholder-gray-500"
           />
         </div>
       </div>
 
       {/* Create Document Form */}
-      {showCreateForm && (
-        <div className="p-4 border-b border-gray-200 bg-gray-50">
-          <form onSubmit={handleCreateDocument} className="space-y-3">
-            <input
-              type="text"
-              placeholder="Document title..."
-              value={newDocTitle}
-              onChange={(e) => setNewDocTitle(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              autoFocus
-            />
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="isPublic"
-                checked={newDocIsPublic}
-                onChange={(e) => setNewDocIsPublic(e.target.checked)}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-              />
-              <label htmlFor="isPublic" className="text-sm text-gray-700">
-                Make public
-              </label>
+      <AnimatePresence>
+        {showCreateForm && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="border-b border-white/10 overflow-hidden"
+          >
+            <div className="p-6 bg-gradient-to-r from-blue-50/50 to-purple-50/50">
+              <form onSubmit={handleCreateDocument} className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Document title..."
+                  value={newDocTitle}
+                  onChange={(e) => setNewDocTitle(e.target.value)}
+                  className="w-full px-4 py-3 bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200"
+                  autoFocus
+                />
+                <div className="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    id="isPublic"
+                    checked={newDocIsPublic}
+                    onChange={(e) => setNewDocIsPublic(e.target.checked)}
+                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500/50"
+                  />
+                  <label htmlFor="isPublic" className="text-sm text-gray-700 font-medium">
+                    Make public
+                  </label>
+                </div>
+                <div className="flex space-x-3">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    type="submit"
+                    className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 text-sm font-semibold shadow-lg"
+                  >
+                    Create
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    type="button"
+                    onClick={() => {
+                      setShowCreateForm(false);
+                      setNewDocTitle("");
+                      setNewDocIsPublic(false);
+                    }}
+                    className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 text-sm font-semibold"
+                  >
+                    Cancel
+                  </motion.button>
+                </div>
+              </form>
             </div>
-            <div className="flex space-x-2">
-              <button
-                type="submit"
-                className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-              >
-                Create
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setShowCreateForm(false);
-                  setNewDocTitle("");
-                  setNewDocIsPublic(false);
-                }}
-                className="flex-1 px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-sm font-medium"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Documents List */}
       <div className="flex-1 overflow-y-auto">
         {displayedDocuments === undefined ? (
-          <div className="p-4 text-center text-gray-500">Loading...</div>
-        ) : displayedDocuments.length === 0 ? (
-          <div className="p-4 text-center text-gray-500">
-            {searchQuery.trim() ? "No documents found" : "No documents yet"}
+          <div className="p-6 text-center">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              className="w-8 h-8 mx-auto mb-3 rounded-full bg-gradient-to-r from-blue-400 to-purple-600 flex items-center justify-center"
+            >
+              <Sparkles className="w-4 h-4 text-white" />
+            </motion.div>
+            <p className="text-gray-500">Loading documents...</p>
           </div>
+        ) : displayedDocuments.length === 0 ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-6 text-center"
+          >
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+              <FileText className="w-8 h-8 text-gray-400" />
+            </div>
+            <p className="text-gray-500 font-medium">
+              {searchQuery.trim() ? "No documents found" : "No documents yet"}
+            </p>
+            {!searchQuery.trim() && (
+              <p className="text-sm text-gray-400 mt-2">
+                Create your first document to get started
+              </p>
+            )}
+          </motion.div>
         ) : (
-          <div className="p-2">
-            {displayedDocuments.map((doc) => (
-              <DocumentItem
-                key={doc._id}
-                document={doc}
-                isSelected={selectedDocumentId === doc._id}
-                onSelect={() => onSelectDocument(doc._id)}
-                onTogglePublic={() => handleTogglePublic(doc._id)}
-                onDelete={() => handleDeleteDocument(doc._id)}
-              />
-            ))}
+          <div className="p-3 space-y-2">
+            <AnimatePresence>
+              {displayedDocuments.map((doc, index) => (
+                <motion.div
+                  key={doc._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ delay: index * 0.05, duration: 0.3 }}
+                >
+                  <DocumentItem
+                    document={doc}
+                    isSelected={selectedDocumentId === doc._id}
+                    onSelect={() => onSelectDocument(doc._id)}
+                    onTogglePublic={() => handleTogglePublic(doc._id)}
+                    onDelete={() => handleDeleteDocument(doc._id)}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -197,78 +258,105 @@ function DocumentItem({
   const isOwner = loggedInUser?._id === document.createdBy;
 
   return (
-    <div
-      className={`group relative p-3 rounded-lg cursor-pointer transition-colors ${
+    <motion.div
+      whileHover={{ scale: 1.02, y: -2 }}
+      whileTap={{ scale: 0.98 }}
+      className={`group relative p-4 rounded-2xl cursor-pointer transition-all duration-200 ${
         isSelected
-          ? "bg-blue-50 border border-blue-200"
-          : "hover:bg-gray-50 border border-transparent"
+          ? "bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200/50 shadow-lg"
+          : "hover:bg-white/60 hover:shadow-md border-2 border-transparent backdrop-blur-sm"
       }`}
       onClick={onSelect}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1 min-w-0">
-          <div className="flex items-center space-x-2 mb-1">
-            <h3 className="text-sm font-medium text-gray-900 truncate">
+          <div className="flex items-center space-x-3 mb-2">
+            <h3 className="text-sm font-semibold text-gray-900 truncate">
               {document.title}
             </h3>
-            {document.isPublic ? (
-              <Globe className="w-3 h-3 text-green-600 flex-shrink-0" />
-            ) : (
-              <Lock className="w-3 h-3 text-gray-400 flex-shrink-0" />
-            )}
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              className={`p-1 rounded-full ${
+                document.isPublic 
+                  ? "bg-green-100 text-green-600" 
+                  : "bg-gray-100 text-gray-400"
+              }`}
+            >
+              {document.isPublic ? (
+                <Globe className="w-3 h-3" />
+              ) : (
+                <Lock className="w-3 h-3" />
+              )}
+            </motion.div>
           </div>
-          <p className="text-xs text-gray-500">
-            {new Date(document.lastModified).toLocaleDateString()}
+          <p className="text-xs text-gray-500 font-medium">
+            {new Date(document.lastModified).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric'
+            })}
           </p>
         </div>
 
         {isOwner && (
           <div className="relative">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               onClick={(e) => {
                 e.stopPropagation();
                 setShowMenu(!showMenu);
               }}
-              className="p-1 text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="p-2 text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100 transition-all duration-200 rounded-lg hover:bg-white/50"
             >
               <MoreHorizontal className="w-4 h-4" />
-            </button>
+            </motion.button>
 
-            {showMenu && (
-              <div className="absolute right-0 top-6 bg-white border border-gray-200 rounded-lg shadow-lg z-10 py-1 min-w-[120px]">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onTogglePublic();
-                    setShowMenu(false);
-                  }}
-                  className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
+            <AnimatePresence>
+              {showMenu && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute right-0 top-10 bg-white/95 backdrop-blur-xl border border-white/20 rounded-xl shadow-2xl z-20 py-2 min-w-[140px]"
                 >
-                  {document.isPublic ? (
-                    <>
-                      <Lock className="w-4 h-4" />
-                      <span>Make Private</span>
-                    </>
-                  ) : (
-                    <>
-                      <Globe className="w-4 h-4" />
-                      <span>Make Public</span>
-                    </>
-                  )}
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDelete();
-                    setShowMenu(false);
-                  }}
-                  className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  <span>Delete</span>
-                </button>
-              </div>
-            )}
+                  <motion.button
+                    whileHover={{ backgroundColor: "rgba(59, 130, 246, 0.05)" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onTogglePublic();
+                      setShowMenu(false);
+                    }}
+                    className="w-full px-4 py-2 text-left text-sm text-gray-700 flex items-center space-x-3 transition-colors duration-150"
+                  >
+                    {document.isPublic ? (
+                      <>
+                        <Lock className="w-4 h-4" />
+                        <span>Make Private</span>
+                      </>
+                    ) : (
+                      <>
+                        <Globe className="w-4 h-4" />
+                        <span>Make Public</span>
+                      </>
+                    )}
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ backgroundColor: "rgba(239, 68, 68, 0.05)" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete();
+                      setShowMenu(false);
+                    }}
+                    className="w-full px-4 py-2 text-left text-sm text-red-600 flex items-center space-x-3 transition-colors duration-150"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    <span>Delete</span>
+                  </motion.button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         )}
       </div>
@@ -276,10 +364,10 @@ function DocumentItem({
       {/* Click outside to close menu */}
       {showMenu && (
         <div
-          className="fixed inset-0 z-5"
+          className="fixed inset-0 z-10"
           onClick={() => setShowMenu(false)}
         />
       )}
-    </div>
+    </motion.div>
   );
 }

@@ -2,6 +2,8 @@
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
+import { Mail, Lock, User, Sparkles } from "lucide-react";
 
 export function SignInForm() {
   const { signIn } = useAuthActions();
@@ -9,9 +11,9 @@ export function SignInForm() {
   const [submitting, setSubmitting] = useState(false);
 
   return (
-    <div className="w-full">
+    <div className="w-full space-y-6">
       <form
-        className="flex flex-col gap-form-field"
+        className="space-y-5"
         onSubmit={(e) => {
           e.preventDefault();
           setSubmitting(true);
@@ -32,46 +34,93 @@ export function SignInForm() {
           });
         }}
       >
-        <input
-          className="auth-input-field"
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-        />
-        <input
-          className="auth-input-field"
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-        />
-        <button className="auth-button" type="submit" disabled={submitting}>
-          {flow === "signIn" ? "Sign in" : "Sign up"}
-        </button>
-        <div className="text-center text-sm text-secondary">
-          <span>
+        <div className="space-y-4">
+          <div className="relative">
+            <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/80 backdrop-blur-sm border border-white/20 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all duration-200 shadow-sm hover:shadow-md placeholder-gray-500"
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          
+          <div className="relative">
+            <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/80 backdrop-blur-sm border border-white/20 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all duration-200 shadow-sm hover:shadow-md placeholder-gray-500"
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+        </div>
+
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+          type="submit"
+          disabled={submitting}
+        >
+          <div className="flex items-center justify-center space-x-2">
+            {submitting ? (
+              <>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                />
+                <span>Please wait...</span>
+              </>
+            ) : (
+              <>
+                <User className="w-5 h-5" />
+                <span>{flow === "signIn" ? "Sign In" : "Create Account"}</span>
+              </>
+            )}
+          </div>
+        </motion.button>
+
+        <div className="text-center">
+          <span className="text-gray-600">
             {flow === "signIn"
               ? "Don't have an account? "
               : "Already have an account? "}
           </span>
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
             type="button"
-            className="text-primary hover:text-primary-hover hover:underline font-medium cursor-pointer"
+            className="text-blue-600 hover:text-blue-700 font-semibold hover:underline cursor-pointer transition-all duration-200"
             onClick={() => setFlow(flow === "signIn" ? "signUp" : "signIn")}
           >
             {flow === "signIn" ? "Sign up instead" : "Sign in instead"}
-          </button>
+          </motion.button>
         </div>
       </form>
-      <div className="flex items-center justify-center my-3">
-        <hr className="my-4 grow border-gray-200" />
-        <span className="mx-4 text-secondary">or</span>
-        <hr className="my-4 grow border-gray-200" />
+
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-gray-200"></div>
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="px-4 bg-white/80 text-gray-500 font-medium">or continue with</span>
+        </div>
       </div>
-      <button className="auth-button" onClick={() => void signIn("anonymous")}>
-        Sign in anonymously
-      </button>
+
+      <motion.button
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className="w-full py-4 rounded-2xl bg-white/80 backdrop-blur-sm text-gray-700 font-semibold border border-white/20 hover:bg-white/90 hover:shadow-md transition-all duration-200 shadow-sm"
+        onClick={() => void signIn("anonymous")}
+      >
+        <div className="flex items-center justify-center space-x-2">
+          <Sparkles className="w-5 h-5 text-purple-500" />
+          <span>Try it anonymously</span>
+        </div>
+      </motion.button>
     </div>
   );
 }
