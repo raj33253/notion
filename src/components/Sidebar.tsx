@@ -75,16 +75,16 @@ export function Sidebar({ selectedDocumentId, onSelectDocument }: SidebarProps) 
       initial={{ x: -300, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="w-80 bg-white/80 backdrop-blur-xl border-r border-white/20 flex flex-col shadow-xl"
+      className="w-80 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border-r border-white/20 dark:border-gray-700/20 flex flex-col shadow-xl"
     >
       {/* Header */}
-      <div className="p-6 border-b border-white/10">
+      <div className="p-6 border-b border-white/10 dark:border-gray-700/10">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
               <FileText className="w-5 h-5 text-white" />
             </div>
-            <h2 className="text-lg font-bold bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent">
+            <h2 className="text-lg font-bold bg-gradient-to-r from-gray-900 to-blue-900 dark:from-white dark:to-blue-100 bg-clip-text text-transparent">
               Documents
             </h2>
           </div>
@@ -92,7 +92,7 @@ export function Sidebar({ selectedDocumentId, onSelectDocument }: SidebarProps) 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setShowCreateForm(true)}
-            className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 group"
+            className="p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-xl transition-all duration-200 group"
             title="Create new document"
           >
             <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200" />
@@ -101,13 +101,13 @@ export function Sidebar({ selectedDocumentId, onSelectDocument }: SidebarProps) 
 
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
           <input
             type="text"
             placeholder="Search documents..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-white/60 backdrop-blur-sm border border-white/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200 placeholder-gray-500"
+            className="w-full pl-12 pr-4 py-3 bg-white/60 dark:bg-gray-700/60 backdrop-blur-sm border border-white/20 dark:border-gray-600/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white"
           />
         </div>
       </div>
@@ -120,16 +120,16 @@ export function Sidebar({ selectedDocumentId, onSelectDocument }: SidebarProps) 
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="border-b border-white/10 overflow-hidden"
+            className="border-b border-white/10 dark:border-gray-700/10 overflow-hidden"
           >
-            <div className="p-6 bg-gradient-to-r from-blue-50/50 to-purple-50/50">
+            <div className="p-6 bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-900/20 dark:to-purple-900/20">
               <form onSubmit={handleCreateDocument} className="space-y-4">
                 <input
                   type="text"
                   placeholder="Document title..."
                   value={newDocTitle}
                   onChange={(e) => setNewDocTitle(e.target.value)}
-                  className="w-full px-4 py-3 bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200"
+                  className="w-full px-4 py-3 bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm border border-white/20 dark:border-gray-600/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   autoFocus
                 />
                 <div className="flex items-center space-x-3">
@@ -138,9 +138,9 @@ export function Sidebar({ selectedDocumentId, onSelectDocument }: SidebarProps) 
                     id="isPublic"
                     checked={newDocIsPublic}
                     onChange={(e) => setNewDocIsPublic(e.target.checked)}
-                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500/50"
+                    className="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500/50 dark:bg-gray-700"
                   />
-                  <label htmlFor="isPublic" className="text-sm text-gray-700 font-medium">
+                  <label htmlFor="isPublic" className="text-sm text-gray-700 dark:text-gray-300 font-medium">
                     Make public
                   </label>
                 </div>
@@ -162,7 +162,7 @@ export function Sidebar({ selectedDocumentId, onSelectDocument }: SidebarProps) 
                       setNewDocTitle("");
                       setNewDocIsPublic(false);
                     }}
-                    className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 text-sm font-semibold"
+                    className="flex-1 px-4 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200 text-sm font-semibold"
                   >
                     Cancel
                   </motion.button>
@@ -184,7 +184,7 @@ export function Sidebar({ selectedDocumentId, onSelectDocument }: SidebarProps) 
             >
               <Sparkles className="w-4 h-4 text-white" />
             </motion.div>
-            <p className="text-gray-500">Loading documents...</p>
+            <p className="text-gray-500 dark:text-gray-400">Loading documents...</p>
           </div>
         ) : displayedDocuments.length === 0 ? (
           <motion.div
@@ -192,14 +192,14 @@ export function Sidebar({ selectedDocumentId, onSelectDocument }: SidebarProps) 
             animate={{ opacity: 1, y: 0 }}
             className="p-6 text-center"
           >
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-              <FileText className="w-8 h-8 text-gray-400" />
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center">
+              <FileText className="w-8 h-8 text-gray-400 dark:text-gray-500" />
             </div>
-            <p className="text-gray-500 font-medium">
+            <p className="text-gray-500 dark:text-gray-400 font-medium">
               {searchQuery.trim() ? "No documents found" : "No documents yet"}
             </p>
             {!searchQuery.trim() && (
-              <p className="text-sm text-gray-400 mt-2">
+              <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
                 Create your first document to get started
               </p>
             )}
@@ -263,23 +263,23 @@ function DocumentItem({
       whileTap={{ scale: 0.98 }}
       className={`group relative p-4 rounded-2xl cursor-pointer transition-all duration-200 ${
         isSelected
-          ? "bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200/50 shadow-lg"
-          : "hover:bg-white/60 hover:shadow-md border-2 border-transparent backdrop-blur-sm"
+          ? "bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 border-2 border-blue-200/50 dark:border-blue-700/50 shadow-lg"
+          : "hover:bg-white/60 dark:hover:bg-gray-700/60 hover:shadow-md border-2 border-transparent backdrop-blur-sm"
       }`}
       onClick={onSelect}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1 min-w-0">
           <div className="flex items-center space-x-3 mb-2">
-            <h3 className="text-sm font-semibold text-gray-900 truncate">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white truncate">
               {document.title}
             </h3>
             <motion.div
               whileHover={{ scale: 1.1 }}
               className={`p-1 rounded-full ${
                 document.isPublic 
-                  ? "bg-green-100 text-green-600" 
-                  : "bg-gray-100 text-gray-400"
+                  ? "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400" 
+                  : "bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500"
               }`}
             >
               {document.isPublic ? (
@@ -289,7 +289,7 @@ function DocumentItem({
               )}
             </motion.div>
           </div>
-          <p className="text-xs text-gray-500 font-medium">
+          <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">
             {new Date(document.lastModified).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
@@ -307,7 +307,7 @@ function DocumentItem({
                 e.stopPropagation();
                 setShowMenu(!showMenu);
               }}
-              className="p-2 text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100 transition-all duration-200 rounded-lg hover:bg-white/50"
+              className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 opacity-0 group-hover:opacity-100 transition-all duration-200 rounded-lg hover:bg-white/50 dark:hover:bg-gray-700/50"
             >
               <MoreHorizontal className="w-4 h-4" />
             </motion.button>
@@ -319,7 +319,7 @@ function DocumentItem({
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: -10 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 top-10 bg-white/95 backdrop-blur-xl border border-white/20 rounded-xl shadow-2xl z-20 py-2 min-w-[140px]"
+                  className="absolute right-0 top-10 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl border border-white/20 dark:border-gray-700/20 rounded-xl shadow-2xl z-20 py-2 min-w-[140px]"
                 >
                   <motion.button
                     whileHover={{ backgroundColor: "rgba(59, 130, 246, 0.05)" }}
@@ -328,7 +328,7 @@ function DocumentItem({
                       onTogglePublic();
                       setShowMenu(false);
                     }}
-                    className="w-full px-4 py-2 text-left text-sm text-gray-700 flex items-center space-x-3 transition-colors duration-150"
+                    className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 flex items-center space-x-3 transition-colors duration-150 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                   >
                     {document.isPublic ? (
                       <>
@@ -349,7 +349,7 @@ function DocumentItem({
                       onDelete();
                       setShowMenu(false);
                     }}
-                    className="w-full px-4 py-2 text-left text-sm text-red-600 flex items-center space-x-3 transition-colors duration-150"
+                    className="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 flex items-center space-x-3 transition-colors duration-150 hover:bg-red-50 dark:hover:bg-red-900/20"
                   >
                     <Trash2 className="w-4 h-4" />
                     <span>Delete</span>
